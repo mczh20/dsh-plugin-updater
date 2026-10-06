@@ -1,0 +1,63 @@
+{
+  "name": "dsh-plugin-updater",
+  "version": "0.1.0",
+  "description": "Update installed DSH plugins from the sidebar Plugins page — a per-plugin update button beside each switch, one-click update-all, and a version picker for installing or reverting to any published version.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "default": "./lib/client.js"
+    },
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "README.zh.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node scripts/build-client.mjs",
+    "pretest": "node scripts/build-client.mjs",
+    "test": "node --test test/package.test.mjs test/policy.test.mjs test/versions.test.mjs test/engine.test.mjs test/client.test.mjs",
+    "prepack": "node scripts/build-client.mjs"
+  },
+  "license": "MIT",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "cordis-plugin",
+    "plugin-update"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-locale"
+      ]
+    }
+  },
+  "engines": {
+    "dsh": ">=0.2.0-rc.2 <0.3.0-0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mczh20/dsh-plugin-updater.git"
+  },
+  "homepage": "https://github.com/mczh20/dsh-plugin-updater",
+  "bugs": {
+    "url": "https://github.com/mczh20/dsh-plugin-updater/issues"
+  },
+  "devDependencies": {
+    "jsdom": "^27.0.0"
+  }
+}

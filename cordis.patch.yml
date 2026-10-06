@@ -1,0 +1,4 @@
+# Applied when this package appears in a profile's dsh.profile.bundles list.
+- insert:
+    - id: plugin-updater
+      name: dsh-plugin-updater

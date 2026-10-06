@@ -1,0 +1,13 @@
+# Dependencies installed only to run the test suite (jsdom).
+node_modules/
+
+# Build artifacts of the packaging dry-run.
+*.tgz
+
+# Editor and OS noise.
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
