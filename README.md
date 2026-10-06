@@ -17,19 +17,21 @@ Built for **DSH 0.2.0-rc.2 Web** (Desktop and Web share the same runtime).
 
 ## Install
 
-From npm:
-
-```sh
-dsh plugin --profile <profile> add dsh-plugin-updater
-```
-
 From GitHub:
 
 ```sh
 dsh plugin --profile <profile> add github:mczh20/dsh-plugin-updater
 ```
 
+A local checkout works too:
+
+```sh
+dsh plugin --profile <profile> add file:/path/to/dsh-plugin-updater
+```
+
 Restart DSH once after installing, then open the sidebar's **Plugins** page.
+
+> **Not on npm yet.** `dsh plugin add dsh-plugin-updater` will not resolve until it is published there; use the GitHub form above.
 
 ## What it will and will not touch
 
@@ -69,7 +71,7 @@ A check asks the profile's own registry for one abbreviated packument, which ans
 
 ```sh
 npm install
-npm test        # builds the client bundle, then runs 71 tests
+npm test        # builds the client bundle, then runs 73 tests
 npm run build   # rebuilds lib/client.js from src/
 ```
 

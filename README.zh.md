@@ -17,19 +17,21 @@
 
 ## 安装
 
-从 npm：
-
-```sh
-dsh plugin --profile <profile> add dsh-plugin-updater
-```
-
 从 GitHub：
 
 ```sh
 dsh plugin --profile <profile> add github:mczh20/dsh-plugin-updater
 ```
 
+本地目录也可以：
+
+```sh
+dsh plugin --profile <profile> add file:/路径/dsh-plugin-updater
+```
+
 安装后重启一次 DSH，然后打开侧边栏的**插件**页。
+
+> **尚未发布到 npm。** 在发布之前 `dsh plugin add dsh-plugin-updater` 无法解析，请使用上面的 GitHub 形式。
 
 ## 会动什么、不会动什么
 
@@ -69,7 +71,7 @@ dsh plugin --profile <profile> add github:mczh20/dsh-plugin-updater
 
 ```sh
 npm install
-npm test        # 先构建客户端 bundle，再跑 71 项测试
+npm test        # 先构建客户端 bundle，再跑 73 项测试
 npm run build   # 从 src/ 重建 lib/client.js
 ```
 

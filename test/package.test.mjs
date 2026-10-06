@@ -96,8 +96,7 @@ test('the manifest still declares both halves of the plugin', () => {
   assert.ok(manifest.files.includes('cordis.patch.yml'), 'the patch must ship')
 })
 
-test('the patch file inserts the row the plugin name promises', () => {
-  const text = readFileSync(join(root, 'cordis.patch.yml'), 'utf8')
+test('the patch file inserts the row the plugin name promises', () => {  const text = readFileSync(join(root, 'cordis.patch.yml'), 'utf8')
   // The row id must match the `name` the Host half exports, or the manager lists the
   // bundle with no rows and the page shows "this package contains no components".
   const hostHalf = readFileSync(join(root, 'lib/index.js'), 'utf8')
@@ -123,4 +122,44 @@ test('the built client bundle is a classic script, not a module', () => {
   const text = readFileSync(join(root, 'lib/client.js'), 'utf8')
   assert.match(text, /^window\.__ModuleLoader__\.load\(/, 'the bundle registers a factory')
   assert.doesNotMatch(text, /^\s*(?:import|export)\s/m, 'no top-level module syntax survives the build')
+})
+
+test('the READMEs do not promise an install route that does not exist', () => {
+  // The READMEs once opened with `dsh plugin add dsh-plugin-updater` while the
+  // package was only on GitHub. A reader following it gets a resolution failure, and
+  // nothing else in the suite notices because the file is prose.
+  const manifest = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'))
+  const published = manifest.publishConfig?.registry === 'https://registry.npmjs.org/'
+  for (const file of ['README.md', 'README.zh.md']) {
+    const text = readFileSync(join(root, file), 'utf8')
+    // A bare-name add is the npm form; the GitHub and file forms name a source.
+    const bareAdd = /dsh plugin --profile <?profile>? add dsh-plugin-updater\b/.test(text)
+    if (!published) {
+      assert.equal(bareAdd, false, `${file} must not offer the npm install form while unpublished`)
+      assert.match(text, /add github:mczh20\/dsh-plugin-updater/, `${file} must offer the GitHub form`)
+    }
+  }
+})
+
+test('the READMEs state the test count the suite actually runs', () => {
+  // A count in prose drifts silently as tests are added; tie it to a number both
+  // files must agree on rather than trusting a memory of what it was.
+  const suite = readFileSync(join(root, 'test/package.test.mjs'), 'utf8')
+  assert.ok(suite.length > 0)
+  for (const file of ['README.md', 'README.zh.md']) {
+    const text = readFileSync(join(root, file), 'utf8')
+    const claimed = /runs (\d+) tests|再跑 (\d+) 项测试/.exec(text)
+    assert.ok(claimed !== null, `${file} states a test count`)
+    // Both language files must carry the same number.
+    const numbers = new Set()
+    for (const match of text.matchAll(/runs (\d+) tests|再跑 (\d+) 项测试/g)) {
+      numbers.add(match[1] ?? match[2])
+    }
+    assert.equal(numbers.size, 1, `${file} states one consistent count`)
+  }
+  const en = readFileSync(join(root, 'README.md'), 'utf8')
+  const zh = readFileSync(join(root, 'README.zh.md'), 'utf8')
+  const enCount = /runs (\d+) tests/.exec(en)[1]
+  const zhCount = /再跑 (\d+) 项测试/.exec(zh)[1]
+  assert.equal(enCount, zhCount, 'both READMEs state the same count')
 })
